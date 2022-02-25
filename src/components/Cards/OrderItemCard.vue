@@ -1,21 +1,15 @@
 <template>
   <nio-card>
     <h4>{{ capitalizeText(name) }}</h4>
-    <p>${{ Number(max_bid_price).toLocaleString() }}</p>
+    <small class="mb-n1 d-block"
+      >${{ Number(max_bid_price).toLocaleString() }}</small
+    >
     <small>{{ data_package_type }}</small>
-    <div class="action">
-      <nio-button
-        x-small
-        variant="secondary"
-        class="action-btn"
-        @click="editItem()"
+    <div class="mt-3 d-flex justify-end">
+      <nio-button x-small variant="secondary" @click="editItem()"
         >Edit</nio-button
       >
-      <nio-button
-        x-small
-        variant="error"
-        class="action-btn"
-        @click="deleteItem()"
+      <nio-button x-small variant="error" class="ml-3" @click="deleteItem()"
         >Delete</nio-button
       >
     </div>
@@ -65,13 +59,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.action {
-  display: flex;
-  justify-content: end;
-}
-.action > .action-btn {
-  margin-left: 6px;
-}
-</style>

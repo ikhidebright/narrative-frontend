@@ -10,11 +10,7 @@
 
       <v-spacer></v-spacer>
 
-      <nio-button
-        type="button"
-        normal-primary
-        style="margin-left: 50px"
-        @click="openCreateModal()"
+      <nio-button type="button" normal-primary @click="openCreateModal()"
         >Create Order</nio-button
       >
     </v-app-bar>

@@ -11,7 +11,7 @@
       </template>
     </CallToActionModal>
     <v-row v-if="loadingOrders">
-      <v-col v-for="n in 4" :key="n" cols="12" md="4">
+      <v-col v-for="n in 4" :key="n" cols="12" sm="4">
         <v-skeleton-loader
           class="mb-5"
           v-bind="skeletonLoaderSttrs"
@@ -20,7 +20,7 @@
       </v-col>
     </v-row>
     <v-row v-else>
-      <v-col v-for="order in orders" :key="order.id" cols="12" md="4">
+      <v-col v-for="order in orders" :key="`oi${order.id}`" cols="12" sm="4">
         <OrderItemCard
           :id="order.id"
           :name="order.name"
