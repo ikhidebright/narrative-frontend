@@ -87,7 +87,7 @@ export default {
     showEditCreateModal(v) {
       if (v && this.showEditCreateModalType === "update") {
         Object.entries(this.currentOrderItemToEdit).forEach(([key, val]) => {
-          this.$set(this.formOrderData, key, val);
+          if (key !== "id") this.$set(this.formOrderData, key, val);
         });
       }
     },
@@ -95,10 +95,13 @@ export default {
   methods: {
     ...mapActions("orders", ["setUpdateOrders", "orderToEdit"]),
     closeModal() {
+      this.formOrderData.name = "";
+      this.formOrderData.data_package_type = "";
+      this.formOrderData.max_bid_price = "";
       this.orderToEdit({
         data: {},
         show: false,
-        typeOfRequest: "create",
+        typeOfRequest: "",
       });
     },
     async handleOkayButton() {
