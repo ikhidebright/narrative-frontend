@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar color="#f2f2f2" flat fixed>
+    <v-app-bar color="#F0F3F4" flat fixed>
       <v-toolbar-title keep-alva>
         <img
           class="mb-n2"
@@ -10,14 +10,14 @@
 
       <v-spacer></v-spacer>
 
-      <div style="width: 30%; margin-top: 20px">
+      <!-- <div style="width: 30%; margin-top: 20px">
         <nio-text-field
           v-model="searchText"
           label="Search orders"
           @input="querySearch()"
           small
         ></nio-text-field>
-      </div>
+      </div> -->
 
       <nio-button
         type="button"

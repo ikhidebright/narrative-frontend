@@ -27,10 +27,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="$emit('close')">
+          <v-btn color="red darken-1" text @click="$emit('close')">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
+          <v-btn color="green darken-1" text @click="dialog = false">
             Save
           </v-btn>
         </v-card-actions>
