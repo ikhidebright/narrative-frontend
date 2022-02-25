@@ -26,7 +26,7 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <nio-text-field
-                  type="text"
+                  type="number"
                   v-model="formOrderData.max_bid_price"
                   label="Maximum Bid Price ($)"
                   :rules="[rules.required]"
@@ -45,7 +45,12 @@
               text
               @click.prevent="handleOkayButton"
             >
-              Save
+              <v-progress-circular
+                v-if="createEditLoading"
+                indeterminate
+                size="20"
+              ></v-progress-circular>
+              <span v-else> Save </span>
             </v-btn>
           </v-card-actions>
         </form>
@@ -61,6 +66,7 @@ import { baseOrderUrl } from "@/services/resource/order";
 
 export default {
   data: () => ({
+    createEditLoading: false,
     formOrderData: {
       name: "",
       data_package_type: "",
@@ -105,7 +111,11 @@ export default {
       });
     },
     async handleOkayButton() {
+      this.createEditLoading = true;
       try {
+        this.formOrderData.max_bid_price = String(
+          this.formOrderData.max_bid_price
+        );
         if (this.showEditCreateModalType === "create") {
           await this.$http.post(baseOrderUrl, this.formOrderData);
         } else if (this.showEditCreateModalType === "update") {
@@ -114,9 +124,11 @@ export default {
             this.formOrderData
           );
         }
+        this.createEditLoading = false;
         this.setUpdateOrders(true);
         this.closeModal();
       } catch (error) {
+        this.createEditLoading = false;
         //
       }
     },

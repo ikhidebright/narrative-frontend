@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <CallToActionModal
+      :loading="deleteLoading"
       :show="showDelete"
       @ok="deleteOrderItem"
       @cancel="showDelete = false"
@@ -54,6 +55,7 @@ export default {
   name: "Home",
   data() {
     return {
+      deleteLoading: false,
       skeletonLoaderSttrs: {
         class: "mb-6",
         boilerplate: true,
@@ -112,12 +114,15 @@ export default {
       this.showDelete = true;
     },
     async deleteOrderItem() {
+      this.deleteLoading = true;
       try {
         await this.$http.delete(`${baseOrderUrl}/${this.itemToDelete.id}`);
         await this.fetchOrders();
         this.showDelete = false;
         this.itemToDelete = {};
+        this.deleteLoading = false;
       } catch (error) {
+        this.deleteLoading = false;
         //
       }
     },

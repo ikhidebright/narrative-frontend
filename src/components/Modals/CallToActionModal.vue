@@ -15,7 +15,12 @@
               {{ cancelText }}
             </v-btn>
             <v-btn color="green darken-1" text @click="$emit('ok')">
-              {{ okText }}
+              <v-progress-circular
+                v-if="loading"
+                indeterminate
+                size="20"
+              ></v-progress-circular>
+              <span v-else> {{ okText }} </span>
             </v-btn>
           </v-card-actions>
         </v-row>
@@ -32,6 +37,10 @@ export default {
     };
   },
   props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     show: {
       type: Boolean,
       default: true,
