@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const errorHandler = (error) => {
-  console.log(error);
+const errorHandler = () => {
+  //   console.log(error);
 };
 
 export default axios.create({

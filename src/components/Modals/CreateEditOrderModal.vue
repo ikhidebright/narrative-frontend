@@ -77,7 +77,20 @@ export default {
   mixins: [utilityMixin],
   props: {},
   computed: {
-    ...mapState("orders", ["showEditCreateModalType", "showEditCreateModal"]),
+    ...mapState("orders", [
+      "showEditCreateModalType",
+      "showEditCreateModal",
+      "currentOrderItemToEdit",
+    ]),
+  },
+  watch: {
+    showEditCreateModal(v) {
+      if (v && this.showEditCreateModalType === "update") {
+        Object.entries(this.currentOrderItemToEdit).forEach(([key, val]) => {
+          this.$set(this.formOrderData, key, val);
+        });
+      }
+    },
   },
   methods: {
     ...mapActions("orders", ["setUpdateOrders", "orderToEdit"]),
@@ -92,11 +105,16 @@ export default {
       try {
         if (this.showEditCreateModalType === "create") {
           await this.$http.post(baseOrderUrl, this.formOrderData);
-          this.setUpdateOrders(true);
-          this.closeModal();
+        } else if (this.showEditCreateModalType === "update") {
+          await this.$http.put(
+            `${baseOrderUrl}/${this.currentOrderItemToEdit.id}`,
+            this.formOrderData
+          );
         }
+        this.setUpdateOrders(true);
+        this.closeModal();
       } catch (error) {
-        console.log(error);
+        //
       }
     },
   },

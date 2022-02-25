@@ -27,7 +27,7 @@
           :max_bid_price="order.max_bid_price"
           :data_package_type="order.data_package_type"
           @on-item-delete="openDeleteModal"
-          @on-item-edit="openEditModal()"
+          @on-item-edit="openEditModal"
         />
       </v-col>
     </v-row>
@@ -71,7 +71,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("orders", ["setUpdateOrders"]),
+    ...mapActions("orders", ["setUpdateOrders", "orderToEdit"]),
     async fetchOrders() {
       try {
         this.loadingOrders = true;
@@ -80,11 +80,15 @@ export default {
         this.loadingOrders = false;
       } catch (error) {
         this.loadingOrders = false;
-        console.log(error);
+        //
       }
     },
     openEditModal(e) {
-      console.log(e);
+      this.orderToEdit({
+        data: e,
+        show: true,
+        typeOfRequest: "update",
+      });
     },
     openDeleteModal(e) {
       this.itemToDelete = e;
@@ -97,7 +101,7 @@ export default {
         this.showDelete = false;
         this.itemToDelete = {};
       } catch (error) {
-        console.log(error);
+        //
       }
     },
   },
