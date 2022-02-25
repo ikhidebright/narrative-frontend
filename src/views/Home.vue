@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import miscMixin from "@/mixins/misc";
 import { mapState, mapActions } from "vuex";
 import OrderItemCard from "@/components/Cards/OrderItemCard";
 import CallToActionModal from "@/components/Modals/CallToActionModal";
@@ -53,6 +54,7 @@ import { baseOrderUrl } from "@/services/resource/order";
 
 export default {
   name: "Home",
+  mixins: [miscMixin],
   data() {
     return {
       deleteLoading: false,
@@ -121,6 +123,7 @@ export default {
         this.showDelete = false;
         this.itemToDelete = {};
         this.deleteLoading = false;
+        this.showSnack("Order deleted successfully", "success");
       } catch (error) {
         this.deleteLoading = false;
         //

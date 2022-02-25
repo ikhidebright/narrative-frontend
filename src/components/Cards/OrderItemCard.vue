@@ -1,6 +1,6 @@
 <template>
   <nio-card>
-    <h4>{{ capitalizeText(name) }}</h4>
+    <h4 class="text-truncate">{{ capitalizeText(name) }}</h4>
     <small class="mb-n1 d-block"
       >${{ Number(max_bid_price).toLocaleString() }}</small
     >

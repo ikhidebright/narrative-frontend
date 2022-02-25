@@ -5,7 +5,7 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import Tacklebox from "@narrative.io/tackle-box";
 import "@narrative.io/tackle-box/dist/tackle-box.css";
-import http from "./plugins/axios";
+import { http } from "./plugins/axios";
 
 Vue.use(Tacklebox);
 

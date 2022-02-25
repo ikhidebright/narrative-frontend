@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import miscMixin from "@/mixins/misc";
 import { mapState, mapActions } from "vuex";
 import utilityMixin from "@/mixins/utility";
 import { baseOrderUrl } from "@/services/resource/order";
@@ -80,7 +81,7 @@ export default {
       },
     },
   }),
-  mixins: [utilityMixin],
+  mixins: [utilityMixin, miscMixin],
   props: {},
   computed: {
     ...mapState("orders", [
@@ -127,9 +128,9 @@ export default {
         this.createEditLoading = false;
         this.setUpdateOrders(true);
         this.closeModal();
+        this.showSnack("Order added successfully", "success");
       } catch (error) {
         this.createEditLoading = false;
-        //
       }
     },
   },

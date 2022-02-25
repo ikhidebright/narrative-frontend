@@ -1,17 +1,24 @@
 import axios from "axios";
+import store from "../store";
 
-const errorHandler = () => {
-  //   console.log(error);
+const errorHandler = (e) => {
+  store.dispatch("snackbars/setSnack", {
+    message: e.data.message[0].message,
+    show: true,
+    type: "red",
+  });
 };
 
-export default axios.create({
+export const http = axios.create({
   baseURL: process.env.VUE_APP_BASE_API_URL,
 });
 
-axios.interceptors.response.use(
-  (response) => response,
+http.interceptors.response.use(
+  (response) => {
+    return response;
+  },
   (error) => {
-    errorHandler(error);
-    return error;
+    errorHandler(error.response);
+    return new Promise.reject(error);
   }
 );

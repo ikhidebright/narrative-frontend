@@ -14,6 +14,7 @@
         >Create Order</nio-button
       >
     </v-app-bar>
+    <Snackbar />
     <CreateEditOrderModal />
   </div>
 </template>
@@ -21,9 +22,10 @@
 <script>
 import { mapActions } from "vuex";
 import CreateEditOrderModal from "@/components/Modals/CreateEditOrderModal";
+import Snackbar from "@/components/Utils/Snackbar";
 
 export default {
-  components: { CreateEditOrderModal },
+  components: { CreateEditOrderModal, Snackbar },
   data() {
     return {};
   },
