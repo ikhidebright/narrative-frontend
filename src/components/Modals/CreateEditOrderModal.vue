@@ -102,14 +102,14 @@ export default {
   methods: {
     ...mapActions("orders", ["setUpdateOrders", "orderToEdit"]),
     closeModal() {
-      this.formOrderData.name = "";
-      this.formOrderData.data_package_type = "";
-      this.formOrderData.max_bid_price = "";
       this.orderToEdit({
         data: {},
         show: false,
         typeOfRequest: "",
       });
+      this.formOrderData.name = "";
+      this.formOrderData.data_package_type = "";
+      this.formOrderData.max_bid_price = "";
     },
     async handleOkayButton() {
       this.createEditLoading = true;
@@ -126,8 +126,8 @@ export default {
           );
         }
         this.createEditLoading = false;
-        this.setUpdateOrders(true);
         this.closeModal();
+        this.setUpdateOrders(true);
         this.showSnack("Order added successfully", "success");
       } catch (error) {
         this.createEditLoading = false;
