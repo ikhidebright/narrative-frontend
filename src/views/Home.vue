@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import OrderItemCard from "@/components/Cards/OrderItemCard";
 import CallToActionModal from "@/components/Modals/CallToActionModal";
 import { baseOrderUrl } from "@/services/resource/order";
@@ -58,13 +59,24 @@ export default {
   async created() {
     await this.fetchOrders();
   },
+  computed: {
+    ...mapState("orders", ["updateOrders"]),
+  },
+  watch: {
+    async updateOrders(v) {
+      if (v) {
+        await this.fetchOrders();
+        this.setUpdateOrders(false);
+      }
+    },
+  },
   methods: {
+    ...mapActions("orders", ["setUpdateOrders"]),
     async fetchOrders() {
       try {
         this.loadingOrders = true;
         const { data } = await this.$http.get(baseOrderUrl);
         this.orders = data.data;
-        console.log(data);
         this.loadingOrders = false;
       } catch (error) {
         this.loadingOrders = false;

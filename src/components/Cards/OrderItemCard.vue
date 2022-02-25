@@ -43,6 +43,11 @@ export default {
     data_package_type: {
       type: String,
       required: true,
+      validator(value) {
+        return ["Device Location", "Device Behavior", "ID Mapping"].includes(
+          value
+        );
+      },
     },
   },
   methods: {
