@@ -21,8 +21,15 @@
       </v-col>
     </v-row>
     <div v-else>
-      <div v-if="orders.length < 1" class="text-center no-orders">
-        <span
+      <div
+        v-if="orders.length < 1 || errorFetchingOrders"
+        class="text-center no-orders"
+      >
+        <span v-if="errorFetchingOrders"
+          >An error occurred, check your internet connection and
+          <span @click="fetchOrders()" class="blue--text cursor"> retry </span>
+        </span>
+        <span v-else
           >You currently have not created any order,
           <span @click="addOrder" class="blue--text cursor">
             add some now!
@@ -57,6 +64,7 @@ export default {
   mixins: [miscMixin],
   data() {
     return {
+      errorFetchingOrders: false,
       deleteLoading: false,
       skeletonLoaderSttrs: {
         class: "mb-6",
@@ -88,12 +96,15 @@ export default {
     ...mapActions("orders", ["setUpdateOrders", "orderToEdit"]),
     async fetchOrders() {
       try {
+        this.errorFetchingOrders = false;
         this.loadingOrders = true;
         const { data } = await this.$http.get(baseOrderUrl);
         this.orders = data.data;
         this.loadingOrders = false;
       } catch (error) {
+        console.log("hereheee");
         this.loadingOrders = false;
+        this.errorFetchingOrders = true;
         //
       }
     },

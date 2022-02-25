@@ -2,8 +2,11 @@ import axios from "axios";
 import store from "../store";
 
 const errorHandler = (e) => {
+  let message = e
+    ? e.data.message[0].message
+    : "Sorry an Error occured, check your internet connection";
   store.dispatch("snackbars/setSnack", {
-    message: e.data.message[0].message,
+    message: message,
     show: true,
     type: "red",
   });
