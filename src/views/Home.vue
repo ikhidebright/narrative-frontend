@@ -19,18 +19,28 @@
         ></v-skeleton-loader>
       </v-col>
     </v-row>
-    <v-row v-else>
-      <v-col v-for="order in orders" :key="`oi${order.id}`" cols="12" sm="4">
-        <OrderItemCard
-          :id="order.id"
-          :name="order.name"
-          :max_bid_price="order.max_bid_price"
-          :data_package_type="order.data_package_type"
-          @on-item-delete="openDeleteModal"
-          @on-item-edit="openEditModal"
-        />
-      </v-col>
-    </v-row>
+    <div v-else>
+      <div v-if="orders.length < 1" class="text-center no-orders">
+        <span
+          >You currently have not created any order,
+          <span @click="addOrder" class="blue--text cursor">
+            add some now!
+          </span>
+        </span>
+      </div>
+      <v-row v-else>
+        <v-col v-for="order in orders" :key="`oi${order.id}`" cols="12" sm="4">
+          <OrderItemCard
+            :id="order.id"
+            :name="order.name"
+            :max_bid_price="order.max_bid_price"
+            :data_package_type="order.data_package_type"
+            @on-item-delete="openDeleteModal"
+            @on-item-edit="openEditModal"
+          />
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 
@@ -83,6 +93,13 @@ export default {
         //
       }
     },
+    addOrder() {
+      this.orderToEdit({
+        data: {},
+        show: true,
+        typeOfRequest: "create",
+      });
+    },
     openEditModal(e) {
       this.orderToEdit({
         data: e,
@@ -111,5 +128,11 @@ export default {
 <style scoped>
 .home {
   margin-top: 15vh;
+}
+.no-orders {
+  margin-top: 35vh;
+}
+.cursor {
+  cursor: pointer;
 }
 </style>
