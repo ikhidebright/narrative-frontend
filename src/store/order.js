@@ -7,8 +7,8 @@ const state = () => ({
 
 const mutations = {
   SET_ORDER_TO_EDIT(state, payload) {
-    state.currentOrderItemToEdit = payload.data;
     state.showEditCreateModal = payload.show;
+    state.currentOrderItemToEdit = payload.data;
     state.showEditCreateModalType = payload.typeOfRequest;
   },
   SET_UPDATE_ORDERS(state, payload) {

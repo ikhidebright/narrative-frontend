@@ -48,6 +48,22 @@
           />
         </v-col>
       </v-row>
+      <div class="text-center mt-6">
+        <v-btn
+          v-if="currentPage < totalPages"
+          type="submit"
+          color="green darken-1"
+          text
+          @click="loadMoreOrderItems()"
+        >
+          <v-progress-circular
+            v-if="loadingMore"
+            indeterminate
+            size="20"
+          ></v-progress-circular>
+          <span v-else> Load more </span>
+        </v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -64,6 +80,9 @@ export default {
   mixins: [miscMixin],
   data() {
     return {
+      nextPage: 2,
+      currentPage: null,
+      totalPages: null,
       errorFetchingOrders: false,
       deleteLoading: false,
       skeletonLoaderSttrs: {
@@ -75,6 +94,7 @@ export default {
       orders: [],
       itemToDelete: {},
       showDelete: false,
+      loadingMore: false,
     };
   },
   components: { OrderItemCard, CallToActionModal },
@@ -94,18 +114,34 @@ export default {
   },
   methods: {
     ...mapActions("orders", ["setUpdateOrders", "orderToEdit"]),
+    async loadMoreOrderItems() {
+      this.loadingMore = true;
+      try {
+        const { data } = await this.$http.get(
+          `${baseOrderUrl}?page=${this.nextPage}`
+        );
+        this.orders.push(...data.data);
+        this.currentPage = data.currentPage;
+        this.totalPages = data.numberOfPages;
+        this.nextPage = data.nextPage;
+        this.loadingMore = false;
+      } catch (error) {
+        this.loadingMore = false;
+      }
+    },
     async fetchOrders() {
       try {
         this.errorFetchingOrders = false;
         this.loadingOrders = true;
         const { data } = await this.$http.get(baseOrderUrl);
         this.orders = data.data;
+        this.currentPage = data.currentPage;
+        this.totalPages = data.numberOfPages;
+        this.nextPage = data.nextPage;
         this.loadingOrders = false;
       } catch (error) {
-        console.log("hereheee");
         this.loadingOrders = false;
         this.errorFetchingOrders = true;
-        //
       }
     },
     addOrder() {
