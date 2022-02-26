@@ -26,9 +26,9 @@
               </v-col>
               <v-col cols="12" sm="6" md="6">
                 <nio-text-field
-                  type="number"
-                  v-model="formOrderData.max_bid_price"
-                  label="Maximum Bid Price ($)"
+                  v-model="pAmount"
+                  type="text"
+                  label="Maximum Bid Price"
                   :rules="[rules.required]"
                 ></nio-text-field>
               </v-col>
@@ -67,6 +67,7 @@ import { baseOrderUrl } from "@/services/resource/order";
 
 export default {
   data: () => ({
+    max_bid: null,
     createEditLoading: false,
     formOrderData: {
       name: "",
@@ -89,9 +90,35 @@ export default {
       "showEditCreateModal",
       "currentOrderItemToEdit",
     ]),
+    pAmount: {
+      get() {
+        let val = parseInt(this.max_bid);
+        val = val.toLocaleString();
+        if (val === "NaN") {
+          return "";
+        } else {
+          return `$${val}`;
+        }
+      },
+      set(val) {
+        // check if the first Character is $ and remove it
+        const firstChar = val.charAt(0);
+        if (firstChar === "$") {
+          val = val.substring(1);
+        }
+
+        // Convert the value to a number
+        if (val !== null) {
+          val = val.split(",").join("");
+          val = parseInt(val);
+          this.max_bid = val;
+        }
+      },
+    },
   },
   watch: {
     showEditCreateModal(v) {
+      this.max_bid = this.currentOrderItemToEdit.max_bid_price;
       if (v && this.showEditCreateModalType === "update") {
         Object.entries(this.currentOrderItemToEdit).forEach(([key, val]) => {
           if (key !== "id") this.$set(this.formOrderData, key, val);
@@ -107,6 +134,7 @@ export default {
         show: false,
         typeOfRequest: "",
       });
+      this.max_bid = null;
       this.formOrderData.name = "";
       this.formOrderData.data_package_type = "";
       this.formOrderData.max_bid_price = "";
@@ -114,9 +142,7 @@ export default {
     async handleOkayButton() {
       this.createEditLoading = true;
       try {
-        this.formOrderData.max_bid_price = String(
-          this.formOrderData.max_bid_price
-        );
+        this.formOrderData.max_bid_price = String(this.max_bid);
         if (this.showEditCreateModalType === "create") {
           await this.$http.post(baseOrderUrl, this.formOrderData);
         } else if (this.showEditCreateModalType === "update") {
