@@ -78,33 +78,47 @@ import { baseOrderUrl } from "@/services/resource/order";
 export default {
   name: "Home",
   mixins: [miscMixin],
-  data() {
-    return {
-      nextPage: 2,
-      currentPage: null,
-      totalPages: null,
-      errorFetchingOrders: false,
-      deleteLoading: false,
-      skeletonLoaderSttrs: {
-        class: "mb-6",
-        boilerplate: true,
-        elevation: 2,
-      },
-      loadingOrders: false,
-      orders: [],
-      itemToDelete: {},
-      showDelete: false,
-      loadingMore: false,
-    };
-  },
+  data: () => ({
+    nextPage: 2,
+    currentPage: null,
+    totalPages: null,
+    errorFetchingOrders: false,
+    deleteLoading: false,
+    skeletonLoaderSttrs: {
+      class: "mb-6",
+      boilerplate: true,
+      elevation: 2,
+    },
+    loadingOrders: false,
+    orders: [],
+    itemToDelete: {},
+    showDelete: false,
+    loadingMore: false,
+  }),
   components: { OrderItemCard, CallToActionModal },
   async created() {
     await this.fetchOrders();
   },
   computed: {
-    ...mapState("orders", ["updateOrders"]),
+    ...mapState("orders", [
+      "updateOrders",
+      "orderEdited",
+      "editedOrderNewDetails",
+    ]),
   },
   watch: {
+    orderEdited(v) {
+      if (v) {
+        const indexOfEditedOrder = this.orders.findIndex((item) => {
+          return item.id === this.editedOrderNewDetails.id;
+        });
+        this.orders.splice(indexOfEditedOrder, 1, this.editedOrderNewDetails);
+        this.setSuccessfulEditedOrder({
+          data: {},
+          edit: false,
+        });
+      }
+    },
     async updateOrders(v) {
       if (v) {
         await this.fetchOrders();
@@ -113,7 +127,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("orders", ["setUpdateOrders", "orderToEdit"]),
+    ...mapActions("orders", [
+      "setUpdateOrders",
+      "setSuccessfulEditedOrder",
+      "orderToEdit",
+    ]),
     async loadMoreOrderItems() {
       this.loadingMore = true;
       try {

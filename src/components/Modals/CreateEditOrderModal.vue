@@ -123,7 +123,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("orders", ["setUpdateOrders", "orderToEdit"]),
+    ...mapActions("orders", [
+      "setUpdateOrders",
+      "setSuccessfulEditedOrder",
+      "orderToEdit",
+    ]),
     closeModal() {
       this.orderToEdit({
         data: {},
@@ -137,20 +141,33 @@ export default {
     },
     async handleOkayButton() {
       this.createEditLoading = true;
+      let details = {
+        id: this.currentOrderItemToEdit.id,
+        name: this.formOrderData.name,
+        max_bid_price: this.formOrderData.max_bid_price,
+        data_package_type: this.formOrderData.data_package_type,
+      };
       try {
         this.formOrderData.max_bid_price = String(this.max_bid);
         if (this.showEditCreateModalType === "create") {
           await this.$http.post(baseOrderUrl, this.formOrderData);
+          this.setUpdateOrders(true);
+          this.createEditLoading = false;
+          this.closeModal();
+          this.showSnack("Order added successfully", "success");
         } else if (this.showEditCreateModalType === "update") {
           await this.$http.put(
             `${baseOrderUrl}/${this.currentOrderItemToEdit.id}`,
             this.formOrderData
           );
+          this.setSuccessfulEditedOrder({
+            data: details,
+            edit: true,
+          });
+          this.createEditLoading = false;
+          this.closeModal();
+          this.showSnack("Order Edited successfully", "success");
         }
-        this.createEditLoading = false;
-        this.closeModal();
-        this.setUpdateOrders(true);
-        this.showSnack("Order added successfully", "success");
       } catch (error) {
         this.createEditLoading = false;
       }

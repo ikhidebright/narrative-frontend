@@ -1,4 +1,6 @@
 const state = () => ({
+  editedOrderNewDetails: {},
+  orderEdited: false,
   currentOrderItemToEdit: {},
   showEditCreateModal: false,
   showEditCreateModalType: "",
@@ -14,6 +16,10 @@ const mutations = {
   SET_UPDATE_ORDERS(state, payload) {
     state.updateOrders = payload;
   },
+  SET_EDITED_ORDER(state, payload) {
+    state.editedOrderNewDetails = payload.data;
+    state.orderEdited = payload.edit;
+  },
 };
 
 const actions = {
@@ -22,6 +28,9 @@ const actions = {
   },
   setUpdateOrders({ commit }, payload) {
     commit("SET_UPDATE_ORDERS", payload);
+  },
+  setSuccessfulEditedOrder({ commit }, payload) {
+    commit("SET_EDITED_ORDER", payload);
   },
 };
 
