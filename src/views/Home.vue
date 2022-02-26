@@ -174,6 +174,9 @@ export default {
         this.itemToDelete = {};
         this.deleteLoading = false;
         this.showSnack("Order deleted successfully", "success");
+        if (this.orders.length === 5 && this.currentPage < this.totalPages) {
+          await this.loadMoreOrderItems();
+        }
       } catch (error) {
         this.deleteLoading = false;
         //
