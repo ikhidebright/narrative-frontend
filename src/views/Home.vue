@@ -166,7 +166,10 @@ export default {
       this.deleteLoading = true;
       try {
         await this.$http.delete(`${baseOrderUrl}/${this.itemToDelete.id}`);
-        await this.fetchOrders();
+        const indexOfOrderItem = this.orders.findIndex((item) => {
+          return item.id === this.itemToDelete.id;
+        });
+        this.orders.splice(indexOfOrderItem, 1);
         this.showDelete = false;
         this.itemToDelete = {};
         this.deleteLoading = false;
