@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-dialog v-model="showEditCreateModal" persistent max-width="600px">
       <nio-card>
-        <form>
+        <v-form ref="form" v-model="valid">
           <v-card-text>
             <h3 class="mb-5">
               {{ capitalizeText(showEditCreateModalType) }} Order
@@ -12,7 +12,7 @@
                 <nio-text-field
                   v-model="formOrderData.name"
                   label="Name"
-                  :rules="[rules.required]"
+                  :rules="[(v) => !!v || 'Required']"
                 ></nio-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -20,8 +20,8 @@
                   class="select"
                   v-model="formOrderData.data_package_type"
                   :items="packageTypes"
-                  label="Choose an item"
-                  :rules="[rules.required]"
+                  :rules="[(v) => !!v || 'Required']"
+                  label="Select data package type"
                 ></nio-select>
               </v-col>
               <v-col cols="12" sm="6" md="6">
@@ -29,7 +29,7 @@
                   v-model="pAmount"
                   type="text"
                   label="Maximum Bid Price"
-                  :rules="[rules.required]"
+                  :rules="[(v) => !!v || 'Required']"
                 ></nio-text-field>
               </v-col>
             </v-row>
@@ -40,6 +40,7 @@
               Close
             </v-btn>
             <v-btn
+              :disabled="!valid || !formOrderData.data_package_type"
               type="submit"
               color="green darken-1"
               text
@@ -53,7 +54,7 @@
               <span v-else> Save </span>
             </v-btn>
           </v-card-actions>
-        </form>
+        </v-form>
       </nio-card>
     </v-dialog>
   </v-row>
@@ -67,20 +68,15 @@ import { baseOrderUrl } from "@/services/resource/order";
 
 export default {
   data: () => ({
+    valid: true,
     max_bid: null,
     createEditLoading: false,
     formOrderData: {
       name: "",
-      data_package_type: "",
+      data_package_type: null,
       max_bid_price: "",
     },
     packageTypes: ["Device Location", "Device Behavior", "ID Mapping"],
-    rules: {
-      required: (value) => !!value || "Required",
-      counter(value) {
-        return value.length > 3 || "Minimun 3 characters";
-      },
-    },
   }),
   mixins: [utilityMixin, miscMixin],
   props: {},
