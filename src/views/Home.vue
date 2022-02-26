@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="mt-10 pt-16">
     <CallToActionModal
       :loading="deleteLoading"
       :show="showDelete"
@@ -37,7 +37,7 @@
         </span>
       </div>
       <v-row v-else>
-        <v-col v-for="order in orders" :key="`oi${order.id}`" cols="12" sm="4">
+        <v-col v-for="order in orders" :key="order.id" cols="12" sm="4">
           <OrderItemCard
             :id="order.id"
             :name="order.name"
@@ -187,9 +187,9 @@ export default {
 </script>
 
 <style scoped>
-.home {
+/* .home {
   margin-top: 15vh;
-}
+} */
 .no-orders {
   margin-top: 35vh;
 }
