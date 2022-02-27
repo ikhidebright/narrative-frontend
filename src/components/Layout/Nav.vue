@@ -2,8 +2,7 @@
   <div>
     <v-app-bar color="#F0F3F4" flat fixed>
       <v-toolbar-title>
-        <img
-          class="mb-n2"
+        <v-img
           src="https://www.narrative.io/hs-fs/hubfs/narrative%20logo%20150.png?width=130&name=narrative%20logo%20150.png"
         />
       </v-toolbar-title>
