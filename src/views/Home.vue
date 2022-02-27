@@ -71,8 +71,10 @@
 <script>
 import miscMixin from "@/mixins/misc";
 import { mapState, mapActions } from "vuex";
-import OrderItemCard from "@/components/Cards/OrderItemCard";
-import CallToActionModal from "@/components/Modals/CallToActionModal";
+const OrderItemCard = () => import("@/components/Cards/OrderItemCard");
+const CallToActionModal = () => import("@/components/Modals/CallToActionModal");
+// import OrderItemCard from "@/components/Cards/OrderItemCard";
+// import CallToActionModal from "@/components/Modals/CallToActionModal";
 import { baseOrderUrl } from "@/services/resource/order";
 
 export default {
