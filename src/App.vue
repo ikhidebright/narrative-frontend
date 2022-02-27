@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Nav from "@/components/Layout/Nav";
+const Nav = () => import("@/components/Layout/Nav");
 
 export default {
   components: {

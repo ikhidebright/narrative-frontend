@@ -20,8 +20,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import CreateEditOrderModal from "@/components/Modals/CreateEditOrderModal";
-import Snackbar from "@/components/Utils/Snackbar";
+const CreateEditOrderModal = () =>
+  import("@/components/Modals/CreateEditOrderModal");
+const Snackbar = () => import("@/components/Utils/Snackbar");
 
 export default {
   components: { CreateEditOrderModal, Snackbar },
