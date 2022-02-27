@@ -21,15 +21,11 @@
 
 <script>
 import { mapActions } from "vuex";
-// import CreateEditOrderModal from "@/components/Modals/CreateEditOrderModal";
-// import Snackbar from "@/components/Utils/Snackbar";
+import CreateEditOrderModal from "@/components/Modals/CreateEditOrderModal";
+import Snackbar from "@/components/Utils/Snackbar";
 
 export default {
-  components: {
-    CreateEditOrderModal: () =>
-      import("@/components/Modals/CreateEditOrderModal"),
-    Snackbar: () => import("@/components/Utils/Snackbar"),
-  },
+  components: { CreateEditOrderModal, Snackbar },
   data() {
     return {};
   },
