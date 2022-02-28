@@ -79,7 +79,7 @@ export default {
   name: "Home",
   mixins: [miscMixin],
   data: () => ({
-    nextPage: 2,
+    nextPage: 1,
     currentPage: null,
     totalPages: null,
     errorFetchingOrders: false,
@@ -138,9 +138,9 @@ export default {
       this.loadingMore = true;
       try {
         const { data } = await this.$http.get(
-          `${baseOrderUrl}?page=${this.nextPage}`
+          `${baseOrderUrl}?limit=${this.orders.length + 10}`
         );
-        this.orders.push(...data.data);
+        this.orders = data.data;
         this.currentPage = data.currentPage;
         this.totalPages = data.numberOfPages;
         this.nextPage = data.nextPage;
@@ -180,7 +180,7 @@ export default {
         typeOfRequest: "update",
       });
     },
-    // open the delete modal setting the itemToDelete to the emitted data from our custom eent
+    // open the delete modal setting the itemToDelete to the emitted data from our custom event
     openDeleteModal(e) {
       this.itemToDelete = e;
       this.showDelete = true;
@@ -196,9 +196,15 @@ export default {
         this.showDelete = false;
         this.itemToDelete = {};
         this.deleteLoading = false;
-        this.showSnack("Order deleted successfully", "success");
-        if (this.orders.length === 5 && this.currentPage < this.totalPages) {
-          await this.loadMoreOrderItems();
+        if (this.nextPage) {
+          const { data } = await this.$http.get(
+            `${baseOrderUrl}?limit=${this.orders.length + 1}`
+          );
+          this.orders = data.data;
+          this.currentPage = data.currentPage;
+          this.totalPages = data.numberOfPages;
+          this.nextPage = data.nextPage;
+          this.showSnack("Order deleted successfully", "success");
         }
       } catch (error) {
         this.deleteLoading = false;
