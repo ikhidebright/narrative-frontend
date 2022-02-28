@@ -144,7 +144,7 @@ export default {
       let details = {
         id: this.currentOrderItemToEdit.id,
         name: this.formOrderData.name,
-        max_bid_price: this.formOrderData.max_bid_price,
+        max_bid_price: String(this.max_bid),
         data_package_type: this.formOrderData.data_package_type,
       };
       try {
