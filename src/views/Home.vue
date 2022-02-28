@@ -107,6 +107,7 @@ export default {
     ]),
   },
   watch: {
+    // check if an order has been edited and change the order item in the order array with new edited values
     orderEdited(v) {
       if (v) {
         const indexOfEditedOrder = this.orders.findIndex((item) => {
@@ -119,6 +120,7 @@ export default {
         });
       }
     },
+    // fetch new orders when updateOrders is true
     async updateOrders(v) {
       if (v) {
         await this.fetchOrders();
@@ -162,6 +164,7 @@ export default {
         this.errorFetchingOrders = true;
       }
     },
+    // dispatch action to open modal to add a new order (NOTE: typeOfRequest = "create")
     addOrder() {
       this.orderToEdit({
         data: {},
@@ -169,6 +172,7 @@ export default {
         typeOfRequest: "create",
       });
     },
+    // dispatch action to open modal to edit an order (NOTE: typeOfRequest = "update")
     openEditModal(e) {
       this.orderToEdit({
         data: e,
@@ -176,6 +180,7 @@ export default {
         typeOfRequest: "update",
       });
     },
+    // open the delete modal setting the itemToDelete to the emitted data from our custom eent
     openDeleteModal(e) {
       this.itemToDelete = e;
       this.showDelete = true;
